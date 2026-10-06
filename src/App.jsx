@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Iridescence from './components/Iridescence/Iridescence.jsx';
 
 const WA_NUMBER = '923360177734';
@@ -37,19 +37,49 @@ export default function App() {
   const reduced = typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const heroRef = useRef(null);
+  const heroBgRef = useRef(null);
+  const heroInnerRef = useRef(null);
+
+  // Reel-style: the scroll drives the 3D hero — parallax + intensifying flow
+  useEffect(() => {
+    if (reduced) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const hero = heroRef.current;
+        if (!hero) return;
+        const h = hero.offsetHeight || 1;
+        const p = Math.max(0, Math.min(1, window.scrollY / h));
+        window.dispatchEvent(new CustomEvent('purity-scroll', { detail: p }));
+        if (heroBgRef.current) {
+          heroBgRef.current.style.transform =
+            `translateY(${window.scrollY * 0.22}px) scale(${1 + p * 0.1})`;
+        }
+        if (heroInnerRef.current) {
+          heroInnerRef.current.style.transform = `translateY(${-window.scrollY * 0.12}px)`;
+          heroInnerRef.current.style.opacity = String(1 - p * 0.85);
+        }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
+  }, [reduced]);
+
   const bookingText = `Assalamualaikum! I would like to book a session at Purity Massage Salon.\nService: ${service}\nDay: ${day}\nTime: ${time}`;
 
   return (
     <>
       {/* HERO */}
-      <header className="hero">
-        <div className="hero-bg">
+      <header className="hero" ref={heroRef}>
+        <div className="hero-bg" ref={heroBgRef}>
           {reduced
             ? <div className="hero-static" />
             : <Iridescence color={[1.0, 0.88, 0.7]} speed={0.7} amplitude={0.12} mouseReact={true} />}
         </div>
         <div className="hero-shade" />
-        <div className="wrap hero-inner">
+        <div className="wrap hero-inner" ref={heroInnerRef}>
           <p className="eyebrow">F-11 Markaz · Islamabad</p>
           <h1>Purity <em>Massage</em> Salon</h1>
           <p className="lead">A perfect blend of care for your body and mind.</p>

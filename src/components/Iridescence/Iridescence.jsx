@@ -118,9 +118,18 @@ export default function Iridescence({
       ctn.addEventListener('mousemove', handleMouseMove);
     }
 
+    // Reel-inspired: scroll drives the 3D — progress 0..1 intensifies the flow
+    function handleScrollDrive(e) {
+      const p = Math.max(0, Math.min(1, e.detail || 0));
+      program.uniforms.uAmplitude.value = amplitude + p * 0.4;
+      program.uniforms.uSpeed.value = speed + p * 1.8;
+    }
+    window.addEventListener('purity-scroll', handleScrollDrive);
+
     return () => {
       cancelAnimationFrame(animateId);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('purity-scroll', handleScrollDrive);
       if (mouseReact) {
         ctn.removeEventListener('mousemove', handleMouseMove);
       }
