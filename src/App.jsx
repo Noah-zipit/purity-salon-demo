@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import Iridescence from './components/Iridescence/Iridescence.jsx';
+import { useMemo, useState } from 'react';
 
 const WA_NUMBER = '923360177734';
 const WA_DISPLAY = '0336 0177734';
@@ -34,75 +33,43 @@ export default function App() {
   const [service, setService] = useState(SERVICES[0].name);
   const [day, setDay] = useState(days[0].full);
   const [time, setTime] = useState(TIMES[2]);
-  const reduced = typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const heroRef = useRef(null);
-  const heroBgRef = useRef(null);
-  const heroInnerRef = useRef(null);
-
-  // Reel-style: the scroll drives the 3D hero — parallax + intensifying flow
-  useEffect(() => {
-    if (reduced) return;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const hero = heroRef.current;
-        if (!hero) return;
-        const h = hero.offsetHeight || 1;
-        const p = Math.max(0, Math.min(1, window.scrollY / h));
-        window.dispatchEvent(new CustomEvent('purity-scroll', { detail: p }));
-        if (heroBgRef.current) {
-          heroBgRef.current.style.transform =
-            `translateY(${window.scrollY * 0.22}px) scale(${1 + p * 0.1})`;
-        }
-        if (heroInnerRef.current) {
-          heroInnerRef.current.style.transform = `translateY(${-window.scrollY * 0.12}px)`;
-          heroInnerRef.current.style.opacity = String(1 - p * 0.85);
-        }
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
-  }, [reduced]);
 
   const bookingText = `Assalamualaikum! I would like to book a session at Purity Massage Salon.\nService: ${service}\nDay: ${day}\nTime: ${time}`;
 
   return (
     <>
-      {/* HERO */}
-      <header className="hero" ref={heroRef}>
-        <div className="hero-bg" ref={heroBgRef}>
-          {reduced
-            ? <div className="hero-static" />
-            : <Iridescence color={[1.0, 0.88, 0.7]} speed={0.7} amplitude={0.12} mouseReact={true} />}
+      <header className="topbar">
+        <div className="wrap topbar-inner">
+          <span className="brand">Purity Massage Salon</span>
+          <span className="locale">F-11 · Islamabad</span>
         </div>
-        <div className="hero-shade" />
-        <div className="wrap hero-inner" ref={heroInnerRef}>
-          <p className="eyebrow">F-11 Markaz · Islamabad</p>
-          <h1>Purity <em>Massage</em> Salon</h1>
-          <p className="lead">A perfect blend of care for your body and mind.</p>
-          <div className="cta-row">
-            <a className="btn btn-gold" href={waLink('Assalamualaikum! I want to book a session at Purity Massage Salon.')}>
-              Book on WhatsApp
-            </a>
-            <a className="btn btn-ghost" href="#services">View services</a>
-          </div>
-        </div>
-        <p className="scroll-hint">Scroll</p>
       </header>
 
-      {/* SERVICES */}
+      <section className="hero">
+        <div className="wrap">
+          <p className="eyebrow">Massage & Spa · F-11 Markaz</p>
+          <h1>Care for your body <em>and</em> mind.</h1>
+          <p className="lead">
+            Professional massage therapies in the heart of Islamabad —
+            relief for pain, stress and tired muscles, in a calm private setting.
+          </p>
+          <div className="cta-row">
+            <a className="btn btn-solid" href={waLink('Assalamualaikum! I want to book a session at Purity Massage Salon.')}>
+              Book on WhatsApp
+            </a>
+            <a className="btn btn-link" href="#services">View treatments</a>
+          </div>
+        </div>
+      </section>
+
       <section className="block" id="services">
         <div className="wrap">
           <p className="kicker">Treatments</p>
-          <h2 className="title">Choose how you unwind</h2>
-          <p className="sub">Professional massage services at honest rates, in a calm and private setting.</p>
-          <div className="svc-grid">
+          <h2>Therapies we offer</h2>
+          <div className="svc-list">
             {SERVICES.map((s, i) => (
-              <div className="svc" key={s.name}>
-                <div className="dot">{['✦', '❋', '✧', '❀', '✶', '✺'][i]}</div>
+              <div className="svc-row" key={s.name}>
+                <span className="num">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <h3>{s.name}</h3>
                   <p>{s.desc}</p>
@@ -113,75 +80,59 @@ export default function App() {
         </div>
       </section>
 
-      {/* EXPERIENCE */}
-      <section className="block exp" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <p className="kicker">The experience</p>
-          <h2 className="title">Your sanctuary in F-11</h2>
-          <figure style={{ marginTop: 22 }}>
-            <img src="./spa.jpg" alt="Therapist giving a relaxing back massage at Purity Massage Salon" loading="lazy" />
-          </figure>
-          <blockquote>
-            “Massage therapies that relieve pain, improve circulation, melt away stress
-            and restore your sense of wellness.”
-          </blockquote>
-          <cite>— Purity Massage Salon</cite>
-        </div>
-      </section>
-
-      {/* BOOKING */}
-      <section className="block" id="book" style={{ paddingTop: 0 }}>
+      <section className="block" id="book">
         <div className="wrap">
           <p className="kicker">Reserve your session</p>
-          <h2 className="title">Book in under a minute</h2>
-          <p className="sub">Pick a treatment, day and time — we will confirm on WhatsApp.</p>
-          <div className="book-card">
-            <label>1 · Treatment</label>
-            <div className="chips">
-              {SERVICES.map((s) => (
-                <button key={s.name} className={'chip' + (service === s.name ? ' on' : '')}
-                  onClick={() => setService(s.name)}>{s.name}</button>
-              ))}
-            </div>
-            <label>2 · Day</label>
-            <div className="chips">
-              {days.map((d) => (
-                <button key={d.full} className={'chip' + (day === d.full ? ' on' : '')}
-                  onClick={() => setDay(d.full)}>{d.label}</button>
-              ))}
-            </div>
-            <label>3 · Time</label>
-            <div className="chips">
-              {TIMES.map((t) => (
-                <button key={t} className={'chip' + (time === t ? ' on' : '')}
-                  onClick={() => setTime(t)}>{t}</button>
-              ))}
-            </div>
-            <a className="btn btn-gold book-cta" href={waLink(bookingText)} target="_blank" rel="noreferrer">
-              Confirm on WhatsApp
-            </a>
-            <p className="book-note">No account needed — your booking opens straight in WhatsApp.</p>
+          <h2>Book in under a minute</h2>
+          <p className="sub">Pick a treatment, day and time — we confirm on WhatsApp.</p>
+
+          <p className="flabel">Treatment</p>
+          <div className="chips">
+            {SERVICES.map((s) => (
+              <button key={s.name}
+                className={'chip' + (service === s.name ? ' on' : '')}
+                onClick={() => setService(s.name)}>{s.name}</button>
+            ))}
           </div>
+
+          <p className="flabel">Day</p>
+          <div className="chips">
+            {days.map((d) => (
+              <button key={d.full}
+                className={'chip' + (day === d.full ? ' on' : '')}
+                onClick={() => setDay(d.full)}>{d.label}</button>
+            ))}
+          </div>
+
+          <p className="flabel">Time</p>
+          <div className="chips">
+            {TIMES.map((t) => (
+              <button key={t}
+                className={'chip' + (time === t ? ' on' : '')}
+                onClick={() => setTime(t)}>{t}</button>
+            ))}
+          </div>
+
+          <a className="btn btn-solid btn-wide" href={waLink(bookingText)} target="_blank" rel="noreferrer">
+            Confirm on WhatsApp
+          </a>
+          <p className="fine">No account needed — your booking opens straight in WhatsApp.</p>
         </div>
       </section>
 
-      {/* VISIT */}
-      <section className="block" style={{ paddingTop: 0 }}>
+      <section className="block">
         <div className="wrap">
           <p className="kicker">Visit us</p>
-          <h2 className="title">Find your calm</h2>
-          <div className="visit-rows">
+          <h2>Find us</h2>
+          <div className="visit">
             <a className="visit-row" href={waLink('Assalamualaikum! I want to book a session at Purity Massage Salon.')}>
-              <span className="k">WhatsApp</span>
-              <span className="v">{WA_DISPLAY}<small>Tap to chat & book</small></span>
+              <span>WhatsApp</span><strong>{WA_DISPLAY}</strong>
             </a>
             <div className="visit-row">
-              <span className="k">Location</span>
-              <span className="v">F-11 Markaz<small>Islamabad</small></span>
+              <span>Location</span><strong>F-11 Markaz, Islamabad</strong>
             </div>
             <a className="visit-row" href={IG_URL} target="_blank" rel="noreferrer">
-              <span className="k">Instagram</span>
-              <span className="v">@puritymassagecenterislamabad<small>See our work</small></span>
+              <span>Instagram</span><strong>@puritymassagecenterislamabad</strong>
             </a>
           </div>
         </div>
@@ -190,16 +141,9 @@ export default function App() {
       <footer>
         <div className="wrap">
           <p className="fbrand">Purity Massage Salon</p>
-          <p>F-11 Markaz, Islamabad · <a href={waLink('Assalamualaikum!')}>{WA_DISPLAY}</a></p>
-          <p style={{ marginTop: 10 }}>Design concept · Elevate Mavens</p>
+          <p>F-11 Markaz, Islamabad · {WA_DISPLAY}</p>
         </div>
       </footer>
-
-      {/* sticky mobile CTA */}
-      <div className="sticky-bar">
-        <a className="btn btn-gold" href={waLink('Assalamualaikum! I want to book a session at Purity Massage Salon.')}>Book on WhatsApp</a>
-        <a className="btn btn-ghost" href="#book">Pick a slot</a>
-      </div>
     </>
   );
 }
