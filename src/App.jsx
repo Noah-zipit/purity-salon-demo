@@ -119,7 +119,7 @@ export default function App() {
           <p className="kicker">The experience</p>
           <h2 className="title">Your sanctuary in F-11</h2>
           <figure style={{ marginTop: 22 }}>
-            <img src="/spa.jpg" alt="Therapist giving a relaxing back massage at Purity Massage Salon" loading="lazy" />
+            <img src="./spa.jpg" alt="Therapist giving a relaxing back massage at Purity Massage Salon" loading="lazy" />
           </figure>
           <blockquote>
             “Massage therapies that relieve pain, improve circulation, melt away stress
