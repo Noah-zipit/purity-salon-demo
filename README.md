@@ -1,16 +1,33 @@
-# React + Vite
+# Purity Massage Salon — booking demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A client pitch demo for Purity Massage Salon (F-11 Markaz, Islamabad): a
+warm, spa-styled one-page site that lets a customer pick a service, choose a
+day and time, and book straight into the salon's WhatsApp — no backend, no
+accounts.
 
-Currently, two official plugins are available:
+## What it does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Service menu** — three signature rituals (Full-Body, Aroma, Facial & Skin)
+  with real photography, plus the extended treatment list.
+- **Booking flow** — pick a service, then a day (next 7 days, "Today" first)
+  and a time slot; the confirmation opens a pre-filled WhatsApp chat with the
+  salon (`wa.me/923360177734`) carrying the full booking details.
+- **Silk hero background** — an animated WebGL silk shader, warm gold on a
+  dark base, zero image assets for the hero.
+- **SEO + social** — meta description, Open Graph and Twitter card tags;
+  cover image points at a real asset in `public/`.
 
-## React Compiler
+## Run it
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```sh
+npm install
+npm run dev     # dev server
+npm run build   # production build to dist/
+npm run lint    # oxlint
+```
 
-## Expanding the Oxlint configuration
+## Notes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- Booking is WhatsApp-first: everything the salon needs arrives as a chat
+  message. No database, no payment flow — this is the pitch demo.
+- `private: true`, not published to npm.
