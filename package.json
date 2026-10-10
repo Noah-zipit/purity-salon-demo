@@ -22,5 +22,12 @@
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
     "vite": "^8.3.0"
+  },
+  "description": "Client pitch demo for Purity Massage Salon (F-11 Markaz, Islamabad): a WhatsApp-first booking page with an animated silk hero.",
+  "license": "MIT",
+  "author": "Ashar Qaisar <noahext994@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Noah-zipit/purity-salon-demo.git"
   }
 }
