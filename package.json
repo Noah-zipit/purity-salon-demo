@@ -29,5 +29,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Noah-zipit/purity-salon-demo.git"
-  }
+  },
+  "keywords": [
+    "salon",
+    "spa",
+    "massage",
+    "islamabad",
+    "client-demo",
+    "vite",
+    "react"
+  ]
 }
