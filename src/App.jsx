@@ -190,21 +190,21 @@ export default function App() {
               <p className="flabel">Treatment</p>
               <div className="chips">
                 {ALL_SERVICES.map((s) => (
-                  <button key={s} className={'chip' + (service === s ? ' on' : '')}
+                  <button key={s} className={'chip' + (service === s ? ' on' : '')} aria-pressed={service === s}
                     onClick={() => setService(s)}>{s}</button>
                 ))}
               </div>
               <p className="flabel">Day</p>
               <div className="chips">
                 {days.map((d) => (
-                  <button key={d.full} className={'chip' + (day === d.full ? ' on' : '')}
+                  <button key={d.full} className={'chip' + (day === d.full ? ' on' : '')} aria-pressed={day === d.full}
                     onClick={() => setDay(d.full)}>{d.label}</button>
                 ))}
               </div>
               <p className="flabel">Time</p>
               <div className="chips">
                 {TIMES.map((t) => (
-                  <button key={t} className={'chip' + (time === t ? ' on' : '')}
+                  <button key={t} className={'chip' + (time === t ? ' on' : '')} aria-pressed={time === t}
                     onClick={() => setTime(t)}>{t}</button>
                 ))}
               </div>
