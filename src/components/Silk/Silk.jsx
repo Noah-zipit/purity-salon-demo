@@ -1,6 +1,6 @@
 import React, { forwardRef, useMemo, useRef, useLayoutEffect, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Color, Mesh, ShaderMaterial } from 'three';
+import { Color } from 'three';
 
 const hexToNormalizedRGB = (hex) => {
   const clean = hex.replace('#', '');
